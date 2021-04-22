@@ -1,0 +1,20 @@
+body {
+    font-family: sans-serif;
+}
+main {
+    width: 510px;
+    margin: 0 auto;
+	padding: 0 2em 1em;
+}
+label {
+    float: left;
+    width: 8em;
+}
+input {
+    width: 20em;
+    margin-bottom: 1em;
+}
+#message {
+    font-weight: bold;
+    color: red;
+}
