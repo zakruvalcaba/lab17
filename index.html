@@ -2,21 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 17: The Event Countdown Application</title>
+    <title>Lab 17: The Pig Dice Game</title>
     <link href="css/styles.css" rel="stylesheet">
     <script src="js/script.js" defer></script>
 </head>
 <body>
     <main>
-        <h1>Countdown To...</h1>
-        <label for="event">Event Name:</label>
-        <input type="text" id="event"><br>
-        <label for="date">Event Date:</label>
-        <input type="text" id="date"><br>
-        <input type="button" id="countdown" value="Countdown!">
-        <p id="message">&nbsp;</p>
+        <h1>The Pig Dice Game</h1>
+        <fieldset>
+            <legend>Rules</legend>
+            <ul>
+                <li>First player to 100 wins.</li>
+                <li>Players take turns rolling the die.</li>
+                <li>Turn ends when player rolls a 1 or chooses to hold.</li>
+                <li>If player rolls a 1, they lose all points earned during the turn.</li>
+                <li>If player holds, points earned during the turn are added to their total.</li>
+            </ul>
+        </fieldset>
+        Player 1
+        <input type="text" id="player1">
+        Score
+        <input type="text" id="score1" value="0" disabled><br>
+        Player 2
+        <input type="text" id="player2">  
+        Score
+        <input type="text" id="score2" value="0" disabled>
+        <input type="button" id="new_game" value="New Game"><br>
+            
+        <section id="turn">
+            <p><span id="current"></span>'s turn</p>
+            <input type="button" id="roll" value="Roll">
+            <input type="button" id="hold" value="Hold">
+    
+            Die
+            <input type="text" id="die" disabled>
+            Total
+            <input type="text" id="total" disabled> 
+        </section>
     </main>
 </body>
 </html>

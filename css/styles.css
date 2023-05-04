@@ -2,19 +2,35 @@ body {
     font-family: sans-serif;
 }
 main {
-    width: 510px;
+    width: 450px;
+    padding: 0 2em 1em;
     margin: 0 auto;
-	padding: 0 2em 1em;
-}
-label {
-    float: left;
-    width: 8em;
 }
 input {
-    width: 20em;
+    width: 4em;
+    margin-left: .5em;
+    margin-bottom: .5em;
+}
+fieldset {
     margin-bottom: 1em;
 }
-#message {
+#turn {
+    display: none;
+}
+#turn.open {
+    display: block;
+}
+#turn p {
     font-weight: bold;
     color: red;
+}
+#player1, #player2 {
+    width: 10em;
+}
+#new_game {
+    width: 6em;
+    margin-left: 1em;
+}
+#hold {
+    margin-right: 2em;
 }

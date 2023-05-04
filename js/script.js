@@ -1,67 +1,84 @@
 // HELPER FUNCTION TO GET DOM ELEMENTS
 const $ = (id) => document.getElementById(id)
 
-function calculateDays() {
-    // PRIVATE VARIABLES
-    let event
-    let dt
-    let year
-    let date
-    let today
-    let oneDay
-    let days
+function getRandomNumber() {
+    // CREATE RANDOM NUMBER
+    let random = Math.random()
+    // RANDOM NUMBER BETWEEN 0 AND 6
+    random = Math.floor(random * 6)
+    // ADD 1 SO RANDOM IS NEVER 0 (1-6)
+    random = random + 1
+    // RETURN RANDOM NUMBER
+    return random
+}
 
-    // SELECT VALUES FROM EVENT AND DATE TEXT BOXES
-    event = $('event').value
-    dt = $('date').value
-
-    // MAKE SURE THAT TEXT BOXES ARE NOT EMPTY
-    if (event.length === 0 || dt.length === 0) {
-        $('message').innerHTML = 'Enter an event and a date.'
-        return
+function changePlayer() {
+    // SWITCH TURN BY COMPARING SPAN TAG'S VALUE WITH PLAYER'S NAME
+    if ($('current').innerHTML === $('player1').value) {
+        $('current').innerHTML = $('player2').value
+    } else {
+        $('current').innerHTML = $('player1').value
     }
+    // SET DIE AND TOTAL TEXT BOXES TO 0
+    $('die').value = '0'
+    $('total').value = '0'
+    $('roll').focus()
+}
 
-    // MAKE SURE THAT DATE CONTAINS "/"
-    if (dt.indexOf('/') === -1) {
-        $('message').innerHTML = 'SLASH: Please check the date format. (Ex: XX/XX/XXXX)'
-        return
-    }
-
-    // GET YEAR FROM EVENT DATE STRING AND VERIFY THAT IT IS 4 DIGIT/NUMERIC
-    year = dt.substring(dt.length - 4)
-    if (isNaN(year)) {
-        $('message').innerHTML = 'YEAR: Please check the date format. (Ex: XX/XX/XXXX)'
-        return
-    }
-
-    // CONVERT THE EVENT DATE STRING TO DATE OBJECT AND MAKE SURE IT'S A VALID DATE
-    date = new Date(dt)
-    if (date.toString() === 'Invalid Date') {
-        $('message').innerHTML = 'DATE: Please check the date format. (Ex: XX/XX/XXXX)'
-        return
-    }
-
-    // CALCULATE DAYS
-    today = new Date() // RIGHT NOW
-
-    // HOURS * MINUTES * SECONDS * MILLISECONDS = ONE DAY
-    oneDay = 24 * 60 * 60 * 1000
-
-    // USER'S DATE - TODAY'S DATE / ONE DAY = NUMBER OF DAYS
-    days = (date.getTime() - today.getTime()) / oneDay
-
-    // ROUND NUMBER OF DAYS UP
-    days = Math.ceil(days)
-
-    // CREATE AND DISPLAY THE MESSAGE
-    if (days === 0) {
-        $('message').innerHTML = `Today is ${event.toUpperCase()}<br>${date.toDateString()}`
-    } else if (days < 0) {
-        $('message').innerHTML = `${event.toUpperCase()} happened ${Math.abs(days)} day(s) ago.<br>${date.toDateString()}`
-    } else if (days > 0) {
-        $('message').innerHTML = `${Math.abs(days)} day(s) until ${event.toUpperCase()}<br>${date.toDateString()}`
+function newGame() {
+    // SET SCORES TO 0
+    $('score1').value = '0'
+    $('score2').value = '0'
+    // CHECK TO SEE IF PLAYER NAMES EXIST
+    if ($('player1').value !== '' || $('player2').value !== '') {
+        $('turn').setAttribute('class', 'open')
+        changePlayer()
+    } else {
+        $('turn').removeAttribute('class')
+        alert('Please enter two player names to begin.')
     }
 }
 
-$('countdown').addEventListener('click', calculateDays)
-$('event').focus()
+function rollDice() {
+    // GET THE TOTAL
+    let total = parseInt($('total').value)
+    // GET RANDOM NUMBER BETWEEN 1-6
+    let die = getRandomNumber()
+    // IF DIE IS 1, 0 OUT TOTAL AND SWITCH PLAYER
+    // OTHERWISE INCREMENT USER'S TEMPORARY TOTAL
+    if (die <= 1) {
+        total = 0
+        changePlayer()
+    } else {
+        total = total + die
+    }
+    $('die').value = die
+    $('total').value = total
+}
+
+function holdTurn() {
+    let total, score
+    // GET THE TOTAL
+    total = parseInt($('total').value)
+    // GET THE SCORE OF THE CURRENT PLAYER
+    if ($('current').innerHTML === $('player1').value) {
+        score = $('score1')
+    } else {
+        score = $('score2')
+    }
+    // ADD CURRENT SCORE TO TOTAL SCORE
+    score.value = parseInt(score.value) + total
+    // IF TOTAL SCORE IS 100, PLAYER WINS, START NEW GAME
+    // OTHERWISE CHANGE PLAYER
+    if (score.value >= 100) {
+        alert(`${$('current').innerHTML} wins!`)
+        newGame()
+    } else {
+        changePlayer()
+    }
+}
+
+// EVENT LISTENERS FOR 'NEW GAME', 'ROLL', AND 'HOLD' BUTTONS
+$('new_game').addEventListener('click', newGame)
+$('roll').addEventListener('click', rollDice)
+$('hold').addEventListener('click', holdTurn)
